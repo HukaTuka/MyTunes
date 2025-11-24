@@ -1,4 +1,6 @@
+/*
 package dk.easv.dal;
+
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
@@ -40,3 +42,4 @@ public class DBConnector {
         } //Connection gets closed here
     }
 }
+*/
