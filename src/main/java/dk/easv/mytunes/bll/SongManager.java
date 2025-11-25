@@ -1,4 +1,4 @@
-package dk.easv.bll;
+package dk.easv.mytunes.bll;
 
 public class SongManager {
 }
