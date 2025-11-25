@@ -22,9 +22,8 @@ public class Song {
         this(-1,title,artist,category, duration,filePath);
     }
 
+
     // Getters and setters
-
-
     public int getId() {
         return id;
     }
