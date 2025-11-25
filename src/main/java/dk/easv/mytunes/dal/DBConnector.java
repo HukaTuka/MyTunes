@@ -1,5 +1,4 @@
-/*
-package dk.easv.dal;
+package dk.easv.mytunes.dal;
 
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
@@ -42,4 +41,3 @@ public class DBConnector {
         } //Connection gets closed here
     }
 }
-*/
