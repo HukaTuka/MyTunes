@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class MyTunesController {
+public class MyTunesViewController {
 
     @FXML
     private TableView<?> tblPl;
