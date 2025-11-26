@@ -39,38 +39,38 @@
       <Button layoutX="740.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnSearch" text="Search" />
       <MenuButton layoutY="529.0" mnemonicParsing="false" text="Options" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="10.0">
         <items>
-          <MenuItem mnemonicParsing="false" text="Create">
+          <MenuItem mnemonicParsing="false">
                <graphic>
-                  <Button fx:id="btnAddNewPl" mnemonicParsing="false" onAction="#btnAddNewPl" text="Button" />
+                  <Button fx:id="btnAddNewPl" mnemonicParsing="false" onAction="#btnAddNewPl" text="Create" />
                </graphic>
             </MenuItem>
-          <MenuItem mnemonicParsing="false" text="Update">
+          <MenuItem mnemonicParsing="false">
                <graphic>
-                  <Button fx:id="btnEditPl" mnemonicParsing="false" onAction="#btnEditPl" text="Button" />
+                  <Button fx:id="btnEditPl" mnemonicParsing="false" onAction="#btnEditPl" text="Update" />
                </graphic>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="Delete">
+            <MenuItem mnemonicParsing="false">
                <graphic>
-                  <Button fx:id="btnDeletePl" mnemonicParsing="false" onAction="#btnDeletePl" text="Button" />
+                  <Button fx:id="btnDeletePl" mnemonicParsing="false" onAction="#btnDeletePl" text="Delete" />
                </graphic>
             </MenuItem>
         </items>
       </MenuButton>
       <MenuButton layoutX="514.0" layoutY="529.0" mnemonicParsing="false" text="Options" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="500.0">
         <items>
-          <MenuItem mnemonicParsing="false" text="Create">
+          <MenuItem mnemonicParsing="false">
                <graphic>
-                  <Button fx:id="btnNewSong" mnemonicParsing="false" onAction="#btnNewSong" text="Button" />
+                  <Button fx:id="btnNewSong" mnemonicParsing="false" onAction="#btnNewSong" text="Create" />
                </graphic>
             </MenuItem>
-          <MenuItem mnemonicParsing="false" text="Update">
+          <MenuItem mnemonicParsing="false">
                <graphic>
-                  <Button fx:id="btnEditSong" mnemonicParsing="false" onAction="#btnEditSong" text="Button" />
+                  <Button fx:id="btnEditSong" mnemonicParsing="false" onAction="#btnEditSong" text="Update" />
                </graphic>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="Delete">
+            <MenuItem mnemonicParsing="false">
                <graphic>
-                  <Button fx:id="btnDeleteSong" mnemonicParsing="false" onAction="#btnDeleteSong" text="Button" />
+                  <Button fx:id="btnDeleteSong" mnemonicParsing="false" onAction="#btnDeleteSong" text="Delete" />
                </graphic>
             </MenuItem>
         </items>
