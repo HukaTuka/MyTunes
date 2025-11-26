@@ -1,79 +1,150 @@
 package dk.easv.mytunes.dal;
-//Project imports
-import dk.easv.mytunes.be.Playlist;
+
 import dk.easv.mytunes.be.Song;
-//Java imports
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object for Song operations
+ */
 public class SongDAO implements ISongDataAccess {
+    private DBConnector dbConnector;
 
-    @Override
-    public List<Song> getAllSongs() throws Exception {
-        ArrayList<Song> allSongs = new ArrayList<>();
-        // try-with-resources
-        try (Connection conn = DBConnector.getConnection();
-             Statement stmt = conn.createStatement())
-        {
-            String sql = "SELECT * FROM dbo.Songs";
-
-            ResultSet rs = stmt.executeQuery(sql);
-
-            // Loop through rows from the database result set
-            while (rs.next()) {
-
-                //Map DB row to Song object
-                int id = rs.getInt("Id");
-                String title = rs.getString("Title");
-                String artist = rs.getString("Artist");
-                String category = rs.getString("Category");
-                int duration = rs.getInt("Duration");
-                String filePath = rs.getString("FilePath");
-
-                Song song = new Song(id, title, artist, category, duration, filePath);
-                allSongs.add(song);
-            }
-            return allSongs;
-
-        }
-
-
-        catch (SQLException ex)
-        {
-
-            ex.printStackTrace();
-            throw new Exception("Could not get songs from database", ex);
-        }
-
+    public SongDAO() throws IOException {
+        this.dbConnector = DBConnector.getInstance();
     }
 
-    @Override
+    /**
+     * Creates a new song in the database
+     */
     public Song createSong(Song song) throws SQLException {
-        return null;
+        String sql = "INSERT INTO Songs (title, artist, category, duration, filePath) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = dbConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setString(1, song.getTitle());
+            stmt.setString(2, song.getArtist());
+            stmt.setString(3, song.getCategory());
+            stmt.setInt(4, song.getDuration());
+            stmt.setString(5, song.getFilePath());
+
+            stmt.executeUpdate();
+
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                song.setId(rs.getInt(1));
+            }
+        }
+        return song;
     }
 
-    @Override
+    /**
+     * Retrieves all songs from the database
+     */
+    public List<Song> getAllSongs() throws SQLException {
+        List<Song> songs = new ArrayList<>();
+        String sql = "SELECT * FROM Songs ORDER BY title";
+
+        try (Connection conn = dbConnector.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                songs.add(createSongFromResultSet(rs));
+            }
+        }
+        return songs;
+    }
+
+    /**
+     * Retrieves a single song by ID
+     */
     public Song getSongById(int id) throws SQLException {
+        String sql = "SELECT * FROM Songs WHERE id = ?";
+
+        try (Connection conn = dbConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return createSongFromResultSet(rs);
+            }
+        }
         return null;
     }
 
-    @Override
+    /**
+     * Updates an existing song
+     */
     public void updateSong(Song song) throws SQLException {
+        String sql = "UPDATE Songs SET title = ?, artist = ?, category = ?, duration = ?, filePath = ? WHERE id = ?";
 
+        try (Connection conn = dbConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, song.getTitle());
+            stmt.setString(2, song.getArtist());
+            stmt.setString(3, song.getCategory());
+            stmt.setInt(4, song.getDuration());
+            stmt.setString(5, song.getFilePath());
+            stmt.setInt(6, song.getId());
+
+            stmt.executeUpdate();
+        }
     }
 
-    @Override
+    /**
+     * Deletes a song from the database
+     */
     public void deleteSong(int songId) throws SQLException {
+        String sql = "DELETE FROM Songs WHERE id = ?";
 
+        try (Connection conn = dbConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, songId);
+            stmt.executeUpdate();
+        }
     }
 
-    @Override
+    /**
+     * Searches songs by title or artist
+     */
     public List<Song> searchSongs(String query) throws SQLException {
-        return List.of();
+        List<Song> songs = new ArrayList<>();
+        String sql = "SELECT * FROM Songs WHERE title LIKE ? OR artist LIKE ? ORDER BY title";
+
+        try (Connection conn = dbConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            String searchPattern = "%" + query + "%";
+            stmt.setString(1, searchPattern);
+            stmt.setString(2, searchPattern);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                songs.add(createSongFromResultSet(rs));
+            }
+        }
+        return songs;
     }
 
+    /**
+     * Helper method to create Song object from ResultSet
+     */
+    private Song createSongFromResultSet(ResultSet rs) throws SQLException {
+        return new Song(
+                rs.getInt("id"),
+                rs.getString("title"),
+                rs.getString("artist"),
+                rs.getString("category"),
+                rs.getInt("duration"),
+                rs.getString("filePath")
+        );
+    }
 }
