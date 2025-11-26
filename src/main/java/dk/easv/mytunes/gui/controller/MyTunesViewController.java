@@ -8,11 +8,14 @@ public class MyTunesViewController {
 
     @FXML
     private TableView<?> tblPl;
-    @FXML private TableView<?> TblSongs;
+    @FXML private TableView<?> tblSongs;
     @FXML private ListView<?> lstSongsOnPl;
-    @FXML private TextField TxtSearch;
+    @FXML private TextField txtSearch;
     @FXML private Slider sldProgress;
     @FXML private Label lblPlaying;
+
+
+
 
     @FXML private void btnSearch(ActionEvent e) {}
     @FXML private void btnAddNewPl(ActionEvent e) {}
