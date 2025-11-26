@@ -38,6 +38,7 @@ target/
 *.ipr
 .idea/shelf/
 .idea/workspace.xml
+.idea/copilot*
 
 
 ### Eclipse ###
@@ -80,5 +81,3 @@ desktop.ini
 
 ### Config ###
 config/config.settings
-
-copilot*
