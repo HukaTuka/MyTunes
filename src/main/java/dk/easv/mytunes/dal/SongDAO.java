@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SongDAO implements IMytunesDataAccess {
+public class SongDAO implements ISongDataAccess {
 
     @Override
     public List<Song> getAllSongs() throws Exception {
@@ -74,26 +74,6 @@ public class SongDAO implements IMytunesDataAccess {
     @Override
     public List<Song> searchSongs(String query) throws SQLException {
         return List.of();
-    }
-
-    @Override
-    public List<Playlist> getAllPlaylists() throws SQLException {
-        return List.of();
-    }
-
-    @Override
-    public Playlist createPlaylist(Playlist newPlaylist) throws SQLException {
-        return null;
-    }
-
-    @Override
-    public void updatePlaylist(Playlist playlist) throws SQLException {
-
-    }
-
-    @Override
-    public void deletePlaylist(Playlist playlist) throws SQLException {
-
     }
 
 }
