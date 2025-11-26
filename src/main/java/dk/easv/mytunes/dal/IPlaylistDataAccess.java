@@ -11,8 +11,11 @@ public interface IPlaylistDataAccess {
 
     //Playlist operations
     List<Playlist> getAllPlaylists() throws SQLException;
+
     Playlist createPlaylist(Playlist newPlaylist) throws SQLException;
+
     void updatePlaylist(Playlist playlist) throws SQLException;
+
     void deletePlaylist(Playlist playlist) throws SQLException;
 
     //Playlist-Song relationship operations
