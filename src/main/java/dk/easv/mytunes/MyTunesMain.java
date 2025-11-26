@@ -10,7 +10,7 @@ import java.io.IOException;
 public class MyTunesMain extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MyTunesMain.class.getResource("MyTunesView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MyTunesMain.class.getResource("views/MyTunesView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("MyTunes");
         stage.setScene(scene);
