@@ -39,17 +39,17 @@
       <Button layoutX="740.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnSearch" text="Search" />
       <MenuButton layoutY="529.0" mnemonicParsing="false" text="Options" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="10.0">
         <items>
-          <MenuItem mnemonicParsing="false" text="Action 1">
+          <MenuItem mnemonicParsing="false" text="Create">
                <graphic>
                   <Button fx:id="btnAddNewPl" mnemonicParsing="false" onAction="#btnAddNewPl" text="Button" />
                </graphic>
             </MenuItem>
-          <MenuItem mnemonicParsing="false" text="Action 2">
+          <MenuItem mnemonicParsing="false" text="Update">
                <graphic>
                   <Button fx:id="btnEditPl" mnemonicParsing="false" onAction="#btnEditPl" text="Button" />
                </graphic>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="Action 1">
+            <MenuItem mnemonicParsing="false" text="Delete">
                <graphic>
                   <Button fx:id="btnDeletePl" mnemonicParsing="false" onAction="#btnDeletePl" text="Button" />
                </graphic>
@@ -58,24 +58,24 @@
       </MenuButton>
       <MenuButton layoutX="514.0" layoutY="529.0" mnemonicParsing="false" text="Options" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="500.0">
         <items>
-          <MenuItem mnemonicParsing="false" text="Action 1">
+          <MenuItem mnemonicParsing="false" text="Create">
                <graphic>
                   <Button fx:id="btnNewSong" mnemonicParsing="false" onAction="#btnNewSong" text="Button" />
                </graphic>
             </MenuItem>
-          <MenuItem mnemonicParsing="false" text="Action 2">
+          <MenuItem mnemonicParsing="false" text="Update">
                <graphic>
                   <Button fx:id="btnEditSong" mnemonicParsing="false" onAction="#btnEditSong" text="Button" />
                </graphic>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" text="Action 1">
+            <MenuItem mnemonicParsing="false" text="Delete">
                <graphic>
                   <Button fx:id="btnDeleteSong" mnemonicParsing="false" onAction="#btnDeleteSong" text="Button" />
                </graphic>
             </MenuItem>
         </items>
       </MenuButton>
-      <Slider fx:id="sldProgress" layoutX="39.0" layoutY="57.0" />
+      <Slider fx:id="sldProgress" layoutX="39.0" layoutY="57.0" prefHeight="14.0" prefWidth="180.0" />
       <Label layoutX="2.0" layoutY="85.0" text="Playlist" AnchorPane.leftAnchor="10.0">
          <font>
             <Font name="System Bold" size="15.0" />
@@ -92,11 +92,11 @@
          </font>
       </Label>
       <Label fx:id="lblPlaying" layoutX="381.0" layoutY="40.0" text="(None)...Is Playing" />
-      <Button layoutX="99.0" layoutY="28.0" mnemonicParsing="false" onAction="#btnPlay" text="Button" />
-      <Button layoutX="165.0" layoutY="28.0" mnemonicParsing="false" onAction="#btnSkip" text="Button" />
-      <Button layoutX="39.0" layoutY="27.0" mnemonicParsing="false" onAction="#btnPrevious" text="Button" />
-      <Button fx:id="btnAddToPL" layoutX="441.0" layoutY="107.0" mnemonicParsing="false" onAction="#btnAddToPL" text="&lt;-" />
-      <Button fx:id="btnMoveUp" layoutX="235.0" layoutY="529.0" mnemonicParsing="false" onAction="#btnMoveUp" text="Button" AnchorPane.bottomAnchor="8.0" />
-      <Button fx:id="btnMoveDown" layoutX="287.0" layoutY="529.0" mnemonicParsing="false" onAction="#btnMoveDown" text="Button" AnchorPane.bottomAnchor="8.0" />
+      <Button layoutX="111.0" layoutY="27.0" mnemonicParsing="false" onAction="#btnPlay" text="Play⮞" />
+      <Button layoutX="172.0" layoutY="27.0" mnemonicParsing="false" onAction="#btnSkip" text="Next" />
+      <Button layoutX="39.0" layoutY="27.0" mnemonicParsing="false" onAction="#btnPrevious" text="Previous" />
+      <Button fx:id="btnAddToPL" layoutX="441.0" layoutY="107.0" mnemonicParsing="false" onAction="#btnAddToPL" text="🡸" />
+      <Button fx:id="btnMoveUp" layoutX="235.0" layoutY="529.0" mnemonicParsing="false" onAction="#btnMoveUp" prefHeight="25.0" prefWidth="29.0" text="🡹" AnchorPane.bottomAnchor="8.0" />
+      <Button fx:id="btnMoveDown" layoutX="265.0" layoutY="530.0" mnemonicParsing="false" onAction="#btnMoveDown" text="🡻" AnchorPane.bottomAnchor="8.0" />
    </children>
 </AnchorPane>
