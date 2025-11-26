@@ -14,6 +14,8 @@ public class DBConnector {
 
     private static final String PROP_FILE = "config/config.settings";
     private static SQLServerDataSource dataSource;
+    private static DBConnector instance;
+
 
     public DBConnector() throws IOException {
         Properties databaseProperties = new Properties();
@@ -26,6 +28,12 @@ public class DBConnector {
         dataSource.setPassword(databaseProperties.getProperty("Password"));
         dataSource.setPortNumber(1433);
         dataSource.setTrustServerCertificate(true);
+    }
+    public static DBConnector getInstance() throws IOException {
+        if (instance == null) {
+            instance = new DBConnector();
+        }
+        return instance;
     }
 
     public static Connection getConnection() throws SQLServerException {
