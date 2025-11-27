@@ -1,5 +1,6 @@
 package dk.easv.mytunes.gui.controller;
 
+import dk.easv.mytunes.bll.YouTubePlayer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -16,7 +17,9 @@ public class MyTunesViewController {
 
 
 
-
+    @FXML private void btnYoutube(ActionEvent e) {
+        new YouTubePlayer().open();
+    }
     @FXML private void btnSearch(ActionEvent e) {}
     @FXML private void btnAddNewPl(ActionEvent e) {}
     @FXML private void btnEditPl(ActionEvent e) {}

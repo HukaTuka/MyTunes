@@ -98,5 +98,6 @@
       <Button fx:id="btnAddToPL" layoutX="441.0" layoutY="107.0" mnemonicParsing="false" onAction="#btnAddToPL" text="🡸" />
       <Button fx:id="btnMoveUp" layoutX="235.0" layoutY="529.0" mnemonicParsing="false" onAction="#btnMoveUp" prefHeight="25.0" prefWidth="29.0" text="🡹" AnchorPane.bottomAnchor="8.0" />
       <Button fx:id="btnMoveDown" layoutX="265.0" layoutY="530.0" mnemonicParsing="false" onAction="#btnMoveDown" text="🡻" AnchorPane.bottomAnchor="8.0" />
+      <Button fx:id="btnYoutube" layoutX="695.0" layoutY="530.0" mnemonicParsing="false" onAction="#btnYoutube" prefHeight="25.0" prefWidth="149.0" text="Open YouTube Player" />
    </children>
 </AnchorPane>
