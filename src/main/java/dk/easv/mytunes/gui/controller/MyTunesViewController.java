@@ -188,5 +188,8 @@ public class MyTunesViewController implements Initializable {
     }
 
 
+    @FXML
+    private void btnYoutube(ActionEvent actionEvent) {
+    }
 }
 
