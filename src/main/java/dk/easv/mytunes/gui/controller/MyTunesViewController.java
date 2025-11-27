@@ -287,6 +287,10 @@ public class MyTunesViewController implements Initializable {
             showWarning("No Selection", "Please select a song");
             return;
         }
+        if (currentPlaylistSongs != null && currentPlaylistSongs.contains(selectedSong)) {
+            showWarning("Duplicate", "Song already exists in this playlist");
+            return;
+        }
 
         try {
             playlistModel.addSongToPlaylist(selectedPl, selectedSong);
