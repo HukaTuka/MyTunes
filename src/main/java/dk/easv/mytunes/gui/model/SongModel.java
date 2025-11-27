@@ -4,6 +4,7 @@ import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.bll.SongManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
  * Acts as intermediary between GUI controllers and business logic
  */
 public class SongModel {
+    private FilteredList<Song> filteredList;
 
     private ObservableList<Song> songsToBeViewed;
     private SongManager songManager;
