@@ -1,5 +1,5 @@
 package dk.easv.mytunes.gui.controller;
-//Java imports
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
