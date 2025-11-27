@@ -2,6 +2,7 @@ package dk.easv.mytunes.gui.controller;
 //Package imports
 import dk.easv.mytunes.be.Playlist;
 import dk.easv.mytunes.be.Song;
+import dk.easv.mytunes.gui.model.PlaylistModel;
 import dk.easv.mytunes.gui.model.SongModel;
 //Java imports
 import javafx.collections.transformation.FilteredList;
@@ -32,6 +33,7 @@ public class MyTunesViewController implements Initializable {
     @FXML private TableColumn <Playlist, Integer> colPlSongs;
     @FXML private TableColumn <Playlist, Integer> colPlTime;
     private SongModel songModel;
+    private PlaylistModel playlistModel;
 
     public MyTunesViewController()  {
         try {
@@ -105,7 +107,21 @@ public class MyTunesViewController implements Initializable {
     @FXML private void btnSearch(ActionEvent e) {}
     @FXML private void btnAddNewPl(ActionEvent e) {}
     @FXML private void btnEditPl(ActionEvent e) {}
-    @FXML private void btnDeletePl(ActionEvent e) {}
+    @FXML private void btnDeletePl(ActionEvent e)
+    {
+        Playlist selectedPl = tblPl.getSelectionModel().getSelectedItem();
+
+        if (selectedPl != null) {
+            try {
+                playlistModel.deletePlaylist(selectedPl);
+            }
+            catch (Exception err){
+                displayError(err);
+            }
+
+        }
+    }
+
     @FXML private void btnNewSong(ActionEvent e) {}
     @FXML private void btnEditSong(ActionEvent e) {}
 
