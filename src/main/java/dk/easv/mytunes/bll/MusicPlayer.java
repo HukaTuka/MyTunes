@@ -1,10 +1,10 @@
 package dk.easv.mytunes.bll;
-
+//Project imports
 import dk.easv.mytunes.be.Song;
+//Java imports
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-
 import java.io.File;
 import java.util.List;
 

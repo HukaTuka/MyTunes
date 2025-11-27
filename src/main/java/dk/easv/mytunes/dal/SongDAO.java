@@ -1,6 +1,7 @@
 package dk.easv.mytunes.dal;
-
+//Project imports
 import dk.easv.mytunes.be.Song;
+//Java imports
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class SongDAO implements ISongDataAccess {
     /**
      * Creates a new song in the database
      */
+    @Override
     public Song createSong(Song song) throws SQLException {
         String sql = "INSERT INTO Songs (title, artist, category, duration, filePath) VALUES (?, ?, ?, ?, ?)";
 
@@ -44,6 +46,7 @@ public class SongDAO implements ISongDataAccess {
     /**
      * Retrieves all songs from the database
      */
+    @Override
     public List<Song> getAllSongs() throws SQLException {
         List<Song> songs = new ArrayList<>();
         String sql = "SELECT * FROM Songs ORDER BY title";
@@ -62,6 +65,7 @@ public class SongDAO implements ISongDataAccess {
     /**
      * Retrieves a single song by ID
      */
+    @Override
     public Song getSongById(int id) throws SQLException {
         String sql = "SELECT * FROM Songs WHERE id = ?";
 
@@ -81,6 +85,7 @@ public class SongDAO implements ISongDataAccess {
     /**
      * Updates an existing song
      */
+    @Override
     public void updateSong(Song song) throws SQLException {
         String sql = "UPDATE Songs SET title = ?, artist = ?, category = ?, duration = ?, filePath = ? WHERE id = ?";
 
@@ -101,6 +106,7 @@ public class SongDAO implements ISongDataAccess {
     /**
      * Deletes a song from the database
      */
+    @Override
     public void deleteSong(int songId) throws SQLException {
         String sql = "DELETE FROM Songs WHERE id = ?";
 
@@ -115,6 +121,7 @@ public class SongDAO implements ISongDataAccess {
     /**
      * Searches songs by title or artist
      */
+    @Override
     public List<Song> searchSongs(String query) throws SQLException {
         List<Song> songs = new ArrayList<>();
         String sql = "SELECT * FROM Songs WHERE title LIKE ? OR artist LIKE ? ORDER BY title";

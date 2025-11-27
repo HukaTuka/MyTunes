@@ -1,7 +1,8 @@
 package dk.easv.mytunes.bll;
-
+//Project imports
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.dal.SongDAO;
+//Java imports
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
