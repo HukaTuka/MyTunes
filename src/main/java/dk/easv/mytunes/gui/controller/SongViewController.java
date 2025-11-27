@@ -13,11 +13,10 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
-/**
- * Controller for Song Create/Edit window
- */
+
 public class SongViewController implements Initializable {
 
     @FXML private Label lblTitle;
@@ -32,10 +31,24 @@ public class SongViewController implements Initializable {
     private Song songToEdit;
     private boolean saveClicked = false;
 
+    // Define the data folder path
+    private static final String DATA_FOLDER = "data";
+    private File dataDirectory;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             songModel = new SongModel();
+
+            // Initialize data directory
+            dataDirectory = new File(DATA_FOLDER);
+
+            // Create data folder if it doesn't exist
+            if (!dataDirectory.exists()) {
+                dataDirectory.mkdirs();
+                System.out.println("Created data folder at: " + dataDirectory.getAbsolutePath());
+            }
+
         } catch (IOException e) {
             showError("Failed to initialize: " + e.getMessage());
         } catch (Exception e) {
@@ -69,12 +82,18 @@ public class SongViewController implements Initializable {
     }
 
     /**
-     * Handle browse button click
+     * Handle browse button click - restricted to data folder only
      */
     @FXML
     private void handleBrowse(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Audio File");
+        fileChooser.setTitle("Select Audio File from Data Folder");
+
+        // Set initial directory to data folder
+        if (dataDirectory.exists()) {
+            fileChooser.setInitialDirectory(dataDirectory);
+        }
+
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Audio Files", "*.mp3", "*.wav"),
                 new FileChooser.ExtensionFilter("MP3 Files", "*.mp3"),
@@ -86,11 +105,18 @@ public class SongViewController implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
-            txtFilePath.setText(selectedFile.getAbsolutePath());
+            // Validate that file is in data folder
+            if (isFileInDataFolder(selectedFile)) {
+                // Store relative path from data folder
+                String relativePath = getRelativePath(selectedFile);
+                txtFilePath.setText(relativePath);
 
-            // Autofill duration if empty
-            if (txtDuration.getText().trim().isEmpty()) {
-                txtDuration.setText("180"); // 3 minutes default
+                // Auto-fill duration if empty
+                if (txtDuration.getText().trim().isEmpty()) {
+                    txtDuration.setText("180"); // 3 minutes default
+                }
+            } else {
+                showError("Selected file must be in the 'data' folder!\nPlease copy your music files to: " + dataDirectory.getAbsolutePath());
             }
         }
     }
@@ -171,9 +197,12 @@ public class SongViewController implements Initializable {
         if (txtFilePath.getText().trim().isEmpty()) {
             errors.append("File path is required.\n");
         } else {
+            // Validate file is in data folder
             File file = new File(txtFilePath.getText().trim());
             if (!file.exists()) {
                 errors.append("Selected file does not exist.\n");
+            } else if (!isFileInDataFolder(file)) {
+                errors.append("File must be in the 'data' folder.\n");
             }
         }
 
@@ -184,6 +213,37 @@ public class SongViewController implements Initializable {
 
         lblError.setVisible(false);
         return true;
+    }
+
+    /**
+     * Checks if a file is within the data folder
+     */
+    private boolean isFileInDataFolder(File file) {
+        try {
+            String filePath = file.getCanonicalPath();
+            String dataPath = dataDirectory.getCanonicalPath();
+            return filePath.startsWith(dataPath);
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Gets the relative path from the data folder
+     */
+    private String getRelativePath(File file) {
+        try {
+            String filePath = file.getCanonicalPath();
+            String dataPath = dataDirectory.getCanonicalPath();
+
+            if (filePath.startsWith(dataPath)) {
+                // Return path relative to project root (includes "data/")
+                return Paths.get("").toAbsolutePath().relativize(file.toPath()).toString();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file.getAbsolutePath();
     }
 
     /**

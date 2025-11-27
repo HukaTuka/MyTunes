@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.web.WebView?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="dk.easv.mytunes.gui.controller.YouTubePlayerController"
+            prefWidth="800" prefHeight="500">
+
+    <top>
+        <VBox spacing="10" style="-fx-background-color: #f5f5f5; -fx-padding: 15;">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="txtUrl"
+                           promptText="Enter YouTube link (e.g., https://www.youtube.com/watch?v=...)"
+                           HBox.hgrow="ALWAYS"
+                           style="-fx-font-size: 13px;"/>
+                <Button text="Play Audio"
+                        onAction="#onPlayAudio"
+                        style="-fx-background-color: #FF0000; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20;"/>
+                <Button text="Stop"
+                        onAction="#onStop"
+                        style="-fx-background-color: #333333; -fx-text-fill: white; -fx-padding: 8 20;"/>
+            </HBox>
+
+            <Label fx:id="lblStatus"
+                   text="Enter a YouTube URL and click Play Audio"
+                   style="-fx-text-fill: #666666; -fx-font-size: 11px;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <StackPane style="-fx-background-color: black;">
+            <WebView fx:id="webView" prefHeight="1" prefWidth="1"/>
+        </StackPane>
+    </center>
+
+</BorderPane>

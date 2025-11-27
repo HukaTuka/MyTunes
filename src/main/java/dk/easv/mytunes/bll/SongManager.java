@@ -13,9 +13,16 @@ import java.util.List;
  */
 public class SongManager {
     private SongDAO songDAO;
+    private static final String DATA_FOLDER = "data";
 
     public SongManager() throws IOException {
         this.songDAO = new SongDAO();
+
+        // Ensure data folder exists
+        File dataDir = new File(DATA_FOLDER);
+        if (!dataDir.exists()) {
+            dataDir.mkdirs();
+        }
     }
 
     /**
@@ -42,6 +49,11 @@ public class SongManager {
             throw new IllegalArgumentException("File does not exist: " + filePath);
         }
 
+        // Validate file is in data folder
+        if (!isFileInDataFolder(file)) {
+            throw new IllegalArgumentException("Music files must be located in the 'data' folder. Please move your file to: " + new File(DATA_FOLDER).getAbsolutePath());
+        }
+
         // Check file extension
         String extension = getFileExtension(filePath);
         if (!extension.equalsIgnoreCase("mp3") && !extension.equalsIgnoreCase("wav")) {
@@ -55,7 +67,7 @@ public class SongManager {
     /**
      * Retrieves all songs
      */
-    public List<Song> getAllSongs() throws Exception {
+    public List<Song> getAllSongs() throws SQLException {
         return songDAO.getAllSongs();
     }
 
@@ -73,6 +85,12 @@ public class SongManager {
         }
         if (song.getArtist() == null || song.getArtist().trim().isEmpty()) {
             throw new IllegalArgumentException("Artist cannot be empty");
+        }
+
+        // Validate file path is in data folder
+        File file = new File(song.getFilePath());
+        if (!isFileInDataFolder(file)) {
+            throw new IllegalArgumentException("Music files must be located in the 'data' folder");
         }
 
         songDAO.updateSong(song);
@@ -96,7 +114,7 @@ public class SongManager {
             Song song = songDAO.getSongById(songId);
             if (song != null) {
                 File file = new File(song.getFilePath());
-                if (file.exists()) {
+                if (file.exists() && isFileInDataFolder(file)) {
                     if (!file.delete()) {
                         throw new Exception("Failed to delete file: " + song.getFilePath());
                     }
@@ -109,7 +127,7 @@ public class SongManager {
     /**
      * Searches songs by query
      */
-    public List<Song> searchSongs(String query) throws Exception {
+    public List<Song> searchSongs(String query) throws SQLException {
         if (query == null || query.trim().isEmpty()) {
             return getAllSongs();
         }
@@ -124,6 +142,20 @@ public class SongManager {
     }
 
     /**
+     * Checks if a file is within the data folder
+     */
+    private boolean isFileInDataFolder(File file) {
+        try {
+            File dataDir = new File(DATA_FOLDER);
+            String filePath = file.getCanonicalPath();
+            String dataPath = dataDir.getCanonicalPath();
+            return filePath.startsWith(dataPath);
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
      * Helper method to get file extension
      */
     private String getFileExtension(String filePath) {
@@ -132,5 +164,12 @@ public class SongManager {
             return filePath.substring(lastDot + 1);
         }
         return "";
+    }
+
+    /**
+     * Gets the data folder path
+     */
+    public static String getDataFolderPath() {
+        return new File(DATA_FOLDER).getAbsolutePath();
     }
 }
