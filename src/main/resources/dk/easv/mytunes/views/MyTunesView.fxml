@@ -50,7 +50,7 @@
 
                 <TableView fx:id="tblSongsOnPl" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colPlSongTItle" prefWidth="180" text="Title" />
+                        <TableColumn fx:id="colPlSongTitle" prefWidth="180" text="Title" />
                         <TableColumn fx:id="colPlSongArtist" prefWidth="120" text="Artist" />
                         <TableColumn fx:id="colPlSongTime" prefWidth="50" text="Time" />
                     </columns>
@@ -106,7 +106,7 @@
 
             <HBox alignment="CENTER_LEFT" spacing="10">
                 <Button onAction="#btnPrevious" prefWidth="40" text="⏮" />
-                <Button fx:id="btnPlayPuase" onAction="#btnPlay" prefWidth="40" text="▶" />
+                <Button fx:id="btnPlayPause" onAction="#btnPlay" prefWidth="40" text="▶" />
                 <Button onAction="#btnSkip" prefWidth="40" text="⏭" />
                 <Button onAction="#btnStop" prefWidth="40" text="⏹" />
 
