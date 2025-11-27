@@ -1,11 +1,10 @@
 package dk.easv.mytunes.gui.model;
-
+//Project imports
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.bll.SongManager;
+//Java imports
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.io.IOException;
 import java.sql.SQLException;
 
 /**
