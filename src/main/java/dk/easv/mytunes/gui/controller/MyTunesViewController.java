@@ -258,12 +258,19 @@ public class MyTunesViewController implements Initializable {
             showWarning("No Selection", "Please select a song in the playlist to remove");
             return;
         }
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Confirm Deletion");
+        confirm.setHeaderText("Delete Song in Playlist");
+        confirm.setContentText("Are you sure you want to delete: " + selectedSong.getTitle() + "?");
 
-        try {
-            playlistModel.removeSongFromPlaylist(selectedPl, selectedSong);
-            loadPlaylistSongs(selectedPl);
-        } catch (SQLException ex) {
-            showError("Error", "Failed to remove song from playlist: " + ex.getMessage());
+        Optional<ButtonType> result = confirm.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                playlistModel.removeSongFromPlaylist(selectedPl, selectedSong);
+                loadPlaylistSongs(selectedPl);
+            } catch (SQLException ex) {
+                showError("Error", "Failed to remove song from playlist: " + ex.getMessage());
+            }
         }
     }
 
