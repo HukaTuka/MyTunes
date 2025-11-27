@@ -1,5 +1,6 @@
 package dk.easv.mytunes.gui.controller;
 //Package imports
+import dk.easv.mytunes.MyTunesMain;
 import dk.easv.mytunes.be.Playlist;
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.gui.model.PlaylistModel;
@@ -9,10 +10,14 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -105,7 +110,10 @@ public class MyTunesViewController implements Initializable {
     }
 
     @FXML private void btnSearch(ActionEvent e) {}
-    @FXML private void btnAddNewPl(ActionEvent e) {}
+    @FXML private void btnAddNewPl(ActionEvent e)
+    {
+        openPlaylistWindow();
+    }
     @FXML private void btnEditPl(ActionEvent e) {}
     @FXML private void btnDeletePl(ActionEvent e)
     {
@@ -122,7 +130,10 @@ public class MyTunesViewController implements Initializable {
         }
     }
 
-    @FXML private void btnNewSong(ActionEvent e) {}
+    @FXML private void btnNewSong(ActionEvent e)
+    {
+        openSongWindow();
+    }
     @FXML private void btnEditSong(ActionEvent e) {}
 
     @FXML private void btnDeleteSong(ActionEvent e)
@@ -139,10 +150,43 @@ public class MyTunesViewController implements Initializable {
 
         }
     }
-    @FXML private void btnPlay(ActionEvent e) {}
+    @FXML private void btnPlay(ActionEvent e)
+    {
+
+    }
     @FXML private void btnSkip(ActionEvent e) {}
     @FXML private void btnPrevious(ActionEvent e) {}
     @FXML private void btnAddToPL(ActionEvent e) {}
     @FXML private void btnMoveUp(ActionEvent e) {}
     @FXML private void btnMoveDown(ActionEvent e) {}
+    private void openSongWindow()
+    {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MyTunesMain.class.getResource("views/SongView.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Song");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            displayError(e);
+            e.printStackTrace();
+        }
+    }
+    private void openPlaylistWindow(){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MyTunesMain.class.getResource("views/PlaylistView.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Playlist");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            displayError(e);
+            e.printStackTrace();
+        }
+    }
+
+
 }
+
