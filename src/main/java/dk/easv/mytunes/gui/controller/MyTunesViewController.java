@@ -165,11 +165,27 @@ public class MyTunesViewController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MyTunesMain.class.getResource("views/SongView.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
+
+            // Get the controller to check if save was clicked
+            SongViewController controller = fxmlLoader.getController();
+            controller.setSongModel(songModel);
+
             Stage stage = new Stage();
             stage.setTitle("Song");
             stage.setScene(scene);
-            stage.show();
+
+            // Wait for window to close and then refresh
+            stage.showAndWait();
+
+            // Refresh the table if save was clicked
+            if (controller.isSaveClicked()) {
+                songModel.loadAllSongs();
+            }
+
         } catch (IOException e) {
+            displayError(e);
+            e.printStackTrace();
+        } catch (Exception e) {
             displayError(e);
             e.printStackTrace();
         }
