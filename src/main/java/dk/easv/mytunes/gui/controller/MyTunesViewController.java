@@ -3,6 +3,7 @@ package dk.easv.mytunes.gui.controller;
 import dk.easv.mytunes.MyTunesMain;
 import dk.easv.mytunes.be.Playlist;
 import dk.easv.mytunes.be.Song;
+import dk.easv.mytunes.bll.YouTubePlayer;
 import dk.easv.mytunes.gui.model.PlaylistModel;
 import dk.easv.mytunes.gui.model.SongModel;
 //Java imports
@@ -190,6 +191,7 @@ public class MyTunesViewController implements Initializable {
 
     @FXML
     private void btnYoutube(ActionEvent actionEvent) {
+        new YouTubePlayer().open();
     }
 }
 
