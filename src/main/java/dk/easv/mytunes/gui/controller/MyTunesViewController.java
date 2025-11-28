@@ -18,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -61,6 +62,7 @@ public class MyTunesViewController implements Initializable {
     private boolean isFiltering = false;
     private Timeline progressTimeline;
     private ObservableList<Song> currentPlaylistSongs;
+    private boolean isSeeking = false;
 
 
     @Override
@@ -83,6 +85,7 @@ public class MyTunesViewController implements Initializable {
 
             // Setup progress timeline
             setupProgressTimeline();
+            setupSeekFunctionality();
 
         } catch (IOException e) {
             showError("Initialization Error", "Failed to initialize application: " + e.getMessage());
@@ -159,6 +162,46 @@ public class MyTunesViewController implements Initializable {
         progressTimeline.setCycleCount(Timeline.INDEFINITE);
         progressTimeline.play();
     }
+    private void setupSeekFunctionality() {
+
+        //mouse pressed start seeking
+        sldProgress.setOnMousePressed((MouseEvent event) -> {
+            if (musicPlayer.isPlaying() || musicPlayer.getCurrentSong() != null) {
+                isSeeking = true;
+            }
+        });
+
+        // Mouse drag update position
+        sldProgress.setOnMouseDragged((MouseEvent event) -> {
+            if (isSeeking) {
+                seekToPosition();
+            }
+        });
+
+        //seek to position
+        sldProgress.setOnMouseReleased((MouseEvent event) -> {
+            if (isSeeking) {
+                seekToPosition();
+                isSeeking = false;
+            }
+        });
+
+        //handle clicking directly on the slider
+        sldProgress.setOnMouseClicked((MouseEvent event) -> {
+            if (musicPlayer.getCurrentSong() != null) {
+                seekToPosition();
+            }
+        });
+    }
+
+    private void seekToPosition() {
+        double totalDuration = musicPlayer.getTotalDuration();
+        if (totalDuration > 0) {
+            double seekPosition = (sldProgress.getValue() / 100.0) * totalDuration;
+            musicPlayer.seek(seekPosition);
+            lblCurrentTime.setText(formatTime(seekPosition));
+        }
+    }
     private String formatTime(double seconds) {
         int mins = (int) seconds / 60;
         int secs = (int) seconds % 60;
@@ -204,7 +247,9 @@ public class MyTunesViewController implements Initializable {
         Song current = musicPlayer.getCurrentSong();
         if (current != null) {
             lblPlaying.setText("Now Playing: " + current.getTitle() + " - " + current.getArtist());
+            sldProgress.setDisable(false);
         } else {
+            sldProgress.setDisable(true);
             lblPlaying.setText("No song playing");
         }
     }
@@ -379,6 +424,7 @@ public class MyTunesViewController implements Initializable {
         lblCurrentTime.setText("0:00");
         lblTotalTime.setText("0:00");
         sldProgress.setValue(0);
+        sldProgress.setDisable(true);
     }
     @FXML
     private void btnSkip(ActionEvent e) {
