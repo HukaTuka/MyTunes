@@ -460,8 +460,42 @@ public class MyTunesViewController implements Initializable {
         updateNowPlaying();
         btnPlayPause.setText("⏸");
     }
-    @FXML private void btnMoveUp(ActionEvent e) {}
-    @FXML private void btnMoveDown(ActionEvent e) {}
+    @FXML
+    private void btnMoveUp(ActionEvent e) {
+        Playlist selectedPl = lstPl.getSelectionModel().getSelectedItem();
+        Song selectedSong = tblSongsOnPl.getSelectionModel().getSelectedItem(); // Changed from tblSongs
+
+        if (selectedPl == null || selectedSong == null) {
+            return;
+        }
+
+        try {
+            playlistModel.moveSongUp(selectedPl, selectedSong);
+            loadPlaylistSongs(selectedPl);
+            tblSongsOnPl.getSelectionModel().select(selectedSong);
+        } catch (SQLException ex) {
+            showError("Error", "Failed to move song: " + ex.getMessage());
+        }
+    }
+
+    @FXML
+    private void btnMoveDown(ActionEvent e) {
+        Playlist selectedPl = lstPl.getSelectionModel().getSelectedItem();
+        Song selectedSong = tblSongsOnPl.getSelectionModel().getSelectedItem(); // Changed from tblSongs
+
+        if (selectedPl == null || selectedSong == null) {
+            return;
+        }
+
+        try {
+            playlistModel.moveSongDown(selectedPl, selectedSong);
+            loadPlaylistSongs(selectedPl);
+            tblSongsOnPl.getSelectionModel().select(selectedSong);
+        } catch (SQLException ex) {
+            showError("Error", "Failed to move song: " + ex.getMessage());
+        }
+    }
+
     private void openSongWindow(Song song) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dk/easv/mytunes/views/SongView.fxml"));
