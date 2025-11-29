@@ -254,7 +254,28 @@ public class MyTunesViewController implements Initializable {
         }
     }
 
-    @FXML private void btnSearch(ActionEvent e) {}
+    @FXML
+    private void btnSearch(ActionEvent e) {
+        try {
+            if(!isFiltering) {
+                //Applies filter using DB search
+                String query = txtSearch.getText().trim();
+                songModel.searchSongs(query);
+                btnSearch.setText("Clear");
+                isFiltering = true;
+                txtSearch.setDisable(true);
+            } else {
+                //Clears filter and reload all songs
+                songModel.loadAllSongs();
+                txtSearch.clear();
+                btnSearch.setText("Filter");
+                isFiltering = false;
+                txtSearch.setDisable(false);
+            }
+        } catch (Exception ex) {
+            showError("Error", "Failed to load songs: " + ex.getMessage());
+        }
+    }
     @FXML
     private void btnAddNewPl(ActionEvent e) {
         openPlaylistWindow(null);
