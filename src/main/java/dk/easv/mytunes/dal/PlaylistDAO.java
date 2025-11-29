@@ -185,53 +185,105 @@ public class PlaylistDAO implements IPlaylistDataAccess {
      * Updates the position of a song in the playlist
      */
     private void updateSongPosition(int playlistId, int songId, int direction) throws SQLException {
-        Connection conn = dbConnector.getConnection();
+        Connection conn = null;
         try {
+            conn = dbConnector.getConnection();
             conn.setAutoCommit(false);
 
-            // Get current position
+            // Get current position of the selected song
             String getCurrentPosSql = "SELECT position FROM PlaylistSongs WHERE playlistId = ? AND songId = ?";
             int currentPos;
+
             try (PreparedStatement stmt = conn.prepareStatement(getCurrentPosSql)) {
                 stmt.setInt(1, playlistId);
                 stmt.setInt(2, songId);
                 ResultSet rs = stmt.executeQuery();
-                if (!rs.next()) return;
+
+                if (!rs.next()) {
+                    conn.rollback();
+                    return; // Song not found in playlist
+                }
                 currentPos = rs.getInt("position");
             }
 
             int newPos = currentPos + direction;
-            if (newPos < 1) return; // Can't move up from first position
 
-            // Swap positions
-            String swapSql = "UPDATE PlaylistSongs SET position = ? WHERE playlistId = ? AND position = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(swapSql)) {
-                // Move the other song to temp position
-                stmt.setInt(1, -1);
+            // Check bounds
+            if (newPos < 1) {
+                conn.rollback();
+                return; // Can't move up from first position
+            }
+
+            int maxPos = getMaxPosition(playlistId);
+            if (newPos > maxPos) {
+                conn.rollback();
+                return; // Can't move down from last position
+            }
+
+            // Find the song at the target position
+            String getTargetSongSql = "SELECT songId FROM PlaylistSongs WHERE playlistId = ? AND position = ?";
+            int targetSongId;
+
+            try (PreparedStatement stmt = conn.prepareStatement(getTargetSongSql)) {
+                stmt.setInt(1, playlistId);
+                stmt.setInt(2, newPos);
+                ResultSet rs = stmt.executeQuery();
+
+                if (!rs.next()) {
+                    conn.rollback();
+                    return; // No song at target position
+                }
+                targetSongId = rs.getInt("songId");
+            }
+
+            // Use a temporary position value won't conflict
+            int tempPosition = maxPos + 1000;
+
+            // Move current song to temporary position
+            String updateSql = "UPDATE PlaylistSongs SET position = ? WHERE playlistId = ? AND songId = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(updateSql)) {
+                stmt.setInt(1, tempPosition);
                 stmt.setInt(2, playlistId);
-                stmt.setInt(3, newPos);
+                stmt.setInt(3, songId);
                 stmt.executeUpdate();
+            }
 
-                // Move current song to new position
-                stmt.setInt(1, newPos);
-                stmt.setInt(2, playlistId);
-                stmt.setInt(3, currentPos);
-                stmt.executeUpdate();
-
-                // Move other song to old position
+            // Move target song to current song's old position
+            try (PreparedStatement stmt = conn.prepareStatement(updateSql)) {
                 stmt.setInt(1, currentPos);
                 stmt.setInt(2, playlistId);
-                stmt.setInt(3, -1);
+                stmt.setInt(3, targetSongId);
+                stmt.executeUpdate();
+            }
+
+            // Move current song from temp position to new position
+            try (PreparedStatement stmt = conn.prepareStatement(updateSql)) {
+                stmt.setInt(1, newPos);
+                stmt.setInt(2, playlistId);
+                stmt.setInt(3, songId);
                 stmt.executeUpdate();
             }
 
             conn.commit();
+
         } catch (SQLException e) {
-            conn.rollback();
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
             throw e;
         } finally {
-            conn.setAutoCommit(true);
-            conn.close();
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
