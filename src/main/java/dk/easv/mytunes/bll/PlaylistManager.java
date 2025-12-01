@@ -2,6 +2,7 @@ package dk.easv.mytunes.bll;
 //Project imports
 import dk.easv.mytunes.be.Playlist;
 import dk.easv.mytunes.be.Song;
+import dk.easv.mytunes.dal.IPlaylistDataAccess;
 import dk.easv.mytunes.dal.PlaylistDAO;
 //Java imports
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.util.List;
  * Business Logic Layer for Playlist operations
  */
 public class PlaylistManager {
-    private PlaylistDAO playlistDAO;
+    private IPlaylistDataAccess playlistDAO;
 
     public PlaylistManager() throws IOException {
         this.playlistDAO = new PlaylistDAO();

@@ -1,6 +1,7 @@
 package dk.easv.mytunes.bll;
 //Project imports
 import dk.easv.mytunes.be.Song;
+import dk.easv.mytunes.dal.ISongDataAccess;
 import dk.easv.mytunes.dal.SongDAO;
 //Java imports
 import java.io.File;
@@ -12,7 +13,7 @@ import java.util.List;
  * Business Logic Layer for Song operations
  */
 public class SongManager {
-    private SongDAO songDAO;
+    private ISongDataAccess songDAO;
     private static final String DATA_FOLDER = "data";
 
     public SongManager() throws IOException {
