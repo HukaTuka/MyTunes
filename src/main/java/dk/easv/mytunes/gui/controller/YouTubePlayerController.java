@@ -20,7 +20,7 @@ public class YouTubePlayerController {
         engine = webView.getEngine();
         engine.setJavaScriptEnabled(true);
 
-        // Enable debugging
+        // Try to get some debugging
         engine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
             System.out.println("WebView state: " + newState);
             if (newState == Worker.State.SUCCEEDED) {
@@ -29,11 +29,6 @@ public class YouTubePlayerController {
                 lblStatus.setText("Failed to load player");
                 System.err.println("WebView failed to load");
             }
-        });
-
-        // Log JavaScript console messages
-        engine.setOnError(event -> {
-            System.err.println("WebView error: " + event.getMessage());
         });
     }
 
