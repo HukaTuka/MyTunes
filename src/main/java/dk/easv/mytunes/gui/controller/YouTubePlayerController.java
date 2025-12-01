@@ -9,7 +9,7 @@ import javafx.concurrent.Worker;
 
 public class YouTubePlayerController {
 
-    @FXML public TextField txtUrl;  // Made public so YouTubePlayer can access it
+    @FXML public TextField txtUrl;
     @FXML private WebView webView;
     @FXML private Label lblStatus;
 
@@ -20,12 +20,20 @@ public class YouTubePlayerController {
         engine = webView.getEngine();
         engine.setJavaScriptEnabled(true);
 
+        // Enable debugging
         engine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+            System.out.println("WebView state: " + newState);
             if (newState == Worker.State.SUCCEEDED) {
-                lblStatus.setText("Audio player loaded successfully");
+                lblStatus.setText("Video player loaded successfully");
             } else if (newState == Worker.State.FAILED) {
                 lblStatus.setText("Failed to load player");
+                System.err.println("WebView failed to load");
             }
+        });
+
+        // Log JavaScript console messages
+        engine.setOnError(event -> {
+            System.err.println("WebView error: " + event.getMessage());
         });
     }
 
@@ -49,7 +57,7 @@ public class YouTubePlayerController {
             return;
         }
 
-        lblStatus.setText("Loading audio player...");
+        lblStatus.setText("Loading video player...");
         loadYouTubePlayer(videoId);
     }
 
@@ -60,55 +68,42 @@ public class YouTubePlayerController {
     }
 
     private void loadYouTubePlayer(String videoId) {
+        System.out.println("Loading video ID: " + videoId);
+
         String html = """
             <!DOCTYPE html>
             <html>
               <head>
                 <style>
-                  body { margin: 0; background: black; overflow: hidden; }
-                  #player { position: absolute; width: 1px; height: 1px; }
+                  * { margin: 0; padding: 0; }
+                  body { 
+                    background: #000;
+                    overflow: hidden;
+                  }
+                  #player-container {
+                    position: relative;
+                    width: 100vw;
+                    height: 100vh;
+                  }
+                  iframe {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%%;
+                    height: 100%%;
+                    border: none;
+                  }
                 </style>
               </head>
               <body>
-                <div id='player'></div>
-                
-                <script>
-                  var tag = document.createElement('script');
-                  tag.src = "https://www.youtube.com/iframe_api";
-                  var firstScriptTag = document.getElementsByTagName('script')[0];
-                  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-                  var player;
-                  function onYouTubeIframeAPIReady() {
-                    player = new YT.Player('player', {
-                      height: '1',
-                      width: '1',
-                      videoId: '%s',
-                      playerVars: {
-                        'autoplay': 1,
-                        'controls': 0,
-                        'showinfo': 0,
-                        'modestbranding': 1,
-                        'rel': 0
-                      },
-                      events: {
-                        'onReady': onPlayerReady,
-                        'onStateChange': onPlayerStateChange
-                      }
-                    });
-                  }
-
-                  function onPlayerReady(event) {
-                    event.target.playVideo();
-                    event.target.unMute();
-                  }
-
-                  function onPlayerStateChange(event) {
-                    if (event.data == 0) {
-                      console.log('Video ended');
-                    }
-                  }
-                </script>
+                <div id='player-container'>
+                  <iframe 
+                    id='ytplayer'
+                    src='https://www.youtube.com/embed/%s?autoplay=1&controls=1&modestbranding=1&rel=0&enablejsapi=1'
+                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                    allowfullscreen>
+                  </iframe>
+                </div>
               </body>
             </html>
             """.formatted(videoId);
