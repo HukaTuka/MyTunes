@@ -6,7 +6,6 @@ import dk.easv.mytunes.dal.SongDAO;
 //Java imports
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -68,7 +67,7 @@ public class SongManager {
     /**
      * Retrieves all songs
      */
-    public List<Song> getAllSongs() throws SQLException {
+    public List<Song> getAllSongs() throws Exception {
         return songDAO.getAllSongs();
     }
 
@@ -100,7 +99,7 @@ public class SongManager {
     /**
      * Deletes a song
      */
-    public void deleteSong(int songId) throws SQLException {
+    public void deleteSong(int songId) throws Exception {
         if (songId <= 0) {
             throw new IllegalArgumentException("Invalid song ID");
         }
@@ -128,7 +127,7 @@ public class SongManager {
     /**
      * Searches songs by query
      */
-    public List<Song> searchSongs(String query) throws SQLException {
+    public List<Song> searchSongs(String query) throws Exception {
         if (query == null || query.trim().isEmpty()) {
             return getAllSongs();
         }
@@ -138,7 +137,7 @@ public class SongManager {
     /**
      * Gets a song by ID
      */
-    public Song getSongById(int id) throws SQLException {
+    public Song getSongById(int id) throws Exception {
         return songDAO.getSongById(id);
     }
 

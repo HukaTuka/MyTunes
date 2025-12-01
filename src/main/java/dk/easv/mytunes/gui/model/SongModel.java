@@ -1,12 +1,11 @@
 package dk.easv.mytunes.gui.model;
-
+//Project imports
 import dk.easv.mytunes.be.Song;
 import dk.easv.mytunes.bll.SongManager;
+//Java imports
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * Model layer for Song management in the GUI
@@ -77,7 +76,7 @@ public class SongModel {
     /**
      * Gets a song by ID
      */
-    public Song getSongById(int id) throws SQLException {
+    public Song getSongById(int id) throws Exception {
         return songManager.getSongById(id);
     }
 }

@@ -1,4 +1,4 @@
-package dk.easv.mytunes.bll;
+package dk.easv.mytunes.gui;
 //Project imports
 import dk.easv.mytunes.be.Song;
 //Java imports

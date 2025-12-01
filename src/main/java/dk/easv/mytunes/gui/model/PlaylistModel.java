@@ -6,8 +6,7 @@ import dk.easv.mytunes.bll.PlaylistManager;
 //Java imports
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import java.io.IOException;
-import java.sql.SQLException;
+
 
 /**
  * Model layer for Playlist management in the GUI
@@ -18,7 +17,7 @@ public class PlaylistModel {
     private ObservableList<Playlist> playlistsToBeViewed;
     private PlaylistManager playlistManager;
 
-    public PlaylistModel() throws IOException, SQLException {
+    public PlaylistModel() throws Exception {
         this.playlistManager = new PlaylistManager();
         this.playlistsToBeViewed = FXCollections.observableArrayList();
         loadAllPlaylists();
@@ -34,7 +33,7 @@ public class PlaylistModel {
     /**
      * Loads all playlists from the database
      */
-    public void loadAllPlaylists() throws SQLException {
+    public void loadAllPlaylists() throws Exception {
         playlistsToBeViewed.clear();
         playlistsToBeViewed.addAll(playlistManager.getAllPlaylists());
     }
@@ -58,7 +57,7 @@ public class PlaylistModel {
     /**
      * Deletes a playlist
      */
-    public void deletePlaylist(Playlist playlist) throws SQLException {
+    public void deletePlaylist(Playlist playlist) throws Exception {
         playlistManager.deletePlaylist(playlist.getId());
         loadAllPlaylists();
     }
@@ -66,7 +65,7 @@ public class PlaylistModel {
     /**
      * Gets songs in a specific playlist
      */
-    public ObservableList<Song> getSongsInPlaylist(Playlist playlist) throws SQLException {
+    public ObservableList<Song> getSongsInPlaylist(Playlist playlist) throws Exception {
         if (playlist == null) {
             return FXCollections.observableArrayList();
         }
@@ -78,7 +77,7 @@ public class PlaylistModel {
     /**
      * Adds a song to a playlist
      */
-    public void addSongToPlaylist(Playlist playlist, Song song) throws SQLException {
+    public void addSongToPlaylist(Playlist playlist, Song song) throws Exception {
         playlistManager.addSongToPlaylist(playlist.getId(), song.getId());
         loadAllPlaylists();
     }
@@ -86,7 +85,7 @@ public class PlaylistModel {
     /**
      * Removes a song from a playlist
      */
-    public void removeSongFromPlaylist(Playlist playlist, Song song) throws SQLException {
+    public void removeSongFromPlaylist(Playlist playlist, Song song) throws Exception {
         playlistManager.removeSongFromPlaylist(playlist.getId(), song.getId());
         loadAllPlaylists();
     }
@@ -94,21 +93,21 @@ public class PlaylistModel {
     /**
      * Moves a song up in the playlist
      */
-    public void moveSongUp(Playlist playlist, Song song) throws SQLException {
+    public void moveSongUp(Playlist playlist, Song song) throws Exception {
         playlistManager.moveSongUp(playlist.getId(), song.getId());
     }
 
     /**
      * Moves a song down in the playlist
      */
-    public void moveSongDown(Playlist playlist, Song song) throws SQLException {
+    public void moveSongDown(Playlist playlist, Song song) throws Exception {
         playlistManager.moveSongDown(playlist.getId(), song.getId());
     }
 
     /**
      * Gets total number of songs in a playlist
      */
-    public int getSongCount(Playlist playlist) throws SQLException {
+    public int getSongCount(Playlist playlist) throws Exception {
         return playlistManager.getSongsInPlaylist(playlist.getId()).size();
     }
 

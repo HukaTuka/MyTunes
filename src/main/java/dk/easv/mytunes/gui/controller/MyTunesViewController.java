@@ -1,9 +1,9 @@
 package dk.easv.mytunes.gui.controller;
 //Package imports
+import dk.easv.mytunes.MyTunesMain;
 import dk.easv.mytunes.be.Playlist;
 import dk.easv.mytunes.be.Song;
-import dk.easv.mytunes.bll.MusicPlayer;
-import dk.easv.mytunes.bll.YouTubePlayer;
+import dk.easv.mytunes.gui.MusicPlayer;
 import dk.easv.mytunes.gui.model.PlaylistModel;
 import dk.easv.mytunes.gui.model.SongModel;
 //Java imports
@@ -25,7 +25,6 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -87,14 +86,9 @@ public class MyTunesViewController implements Initializable {
             setupProgressTimeline();
             setupSeekFunctionality();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             showError("Initialization Error", "Failed to initialize application: " + e.getMessage());
             e.printStackTrace();
-        } catch (SQLException e) {
-            showError("Database Error", "Failed to load data: " + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
     private void setupTableColumns() {
@@ -218,7 +212,7 @@ public class MyTunesViewController implements Initializable {
             currentPlaylistSongs.setAll(
                     playlistModel.getSongsInPlaylist(playlist)
             );
-        } catch (SQLException e) {
+        } catch (Exception e) {
             showError("Error", "Failed to load playlist songs: " + e.getMessage());
         }
     }
@@ -309,7 +303,7 @@ public class MyTunesViewController implements Initializable {
             try {
                 playlistModel.deletePlaylist(selected);
                 tblSongsOnPl.getItems().clear();
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 showError("Error", "Failed to delete playlist: " + ex.getMessage());
             }
         }
@@ -334,7 +328,7 @@ public class MyTunesViewController implements Initializable {
             try {
                 playlistModel.removeSongFromPlaylist(selectedPl, selectedSong);
                 loadPlaylistSongs(selectedPl);
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 showError("Error", "Failed to remove song from playlist: " + ex.getMessage());
             }
         }
@@ -361,7 +355,7 @@ public class MyTunesViewController implements Initializable {
         try {
             playlistModel.addSongToPlaylist(selectedPl, selectedSong);
             loadPlaylistSongs(selectedPl);
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             showError("Error", "Failed to add song to playlist: " + ex.getMessage());
         }
     }
@@ -473,7 +467,7 @@ public class MyTunesViewController implements Initializable {
             playlistModel.moveSongUp(selectedPl, selectedSong);
             loadPlaylistSongs(selectedPl);
             tblSongsOnPl.getSelectionModel().select(selectedSong);
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             showError("Error", "Failed to move song: " + ex.getMessage());
         }
     }
@@ -491,7 +485,7 @@ public class MyTunesViewController implements Initializable {
             playlistModel.moveSongDown(selectedPl, selectedSong);
             loadPlaylistSongs(selectedPl);
             tblSongsOnPl.getSelectionModel().select(selectedSong);
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             showError("Error", "Failed to move song: " + ex.getMessage());
         }
     }
@@ -541,7 +535,20 @@ public class MyTunesViewController implements Initializable {
 
     @FXML
     private void btnYoutube(ActionEvent actionEvent) {
-        new YouTubePlayer().open();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MyTunesMain.class.getResource("views/YouTubePlayer.fxml"));
+
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setTitle("YouTube Player");
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            System.err.println("Error loading YouTube player FXML: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML

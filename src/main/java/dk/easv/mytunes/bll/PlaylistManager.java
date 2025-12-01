@@ -6,7 +6,6 @@ import dk.easv.mytunes.dal.IPlaylistDataAccess;
 import dk.easv.mytunes.dal.PlaylistDAO;
 //Java imports
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -34,7 +33,7 @@ public class PlaylistManager {
     /**
      * Retrieves all playlists
      */
-    public List<Playlist> getAllPlaylists() throws SQLException {
+    public List<Playlist> getAllPlaylists() throws Exception {
         return playlistDAO.getAllPlaylists();
     }
 
@@ -55,7 +54,7 @@ public class PlaylistManager {
     /**
      * Deletes a playlist
      */
-    public void deletePlaylist(int playlistId) throws SQLException {
+    public void deletePlaylist(int playlistId) throws Exception {
         if (playlistId <= 0) {
             throw new IllegalArgumentException("Invalid playlist ID");
         }
@@ -65,14 +64,14 @@ public class PlaylistManager {
     /**
      * Gets songs in a specific playlist
      */
-    public List<Song> getSongsInPlaylist(int playlistId) throws SQLException {
+    public List<Song> getSongsInPlaylist(int playlistId) throws Exception {
         return playlistDAO.getSongsInPlaylist(playlistId);
     }
 
     /**
      * Adds a song to a playlist
      */
-    public void addSongToPlaylist(int playlistId, int songId) throws SQLException {
+    public void addSongToPlaylist(int playlistId, int songId) throws Exception {
         if (playlistId <= 0 || songId <= 0) {
             throw new IllegalArgumentException("Invalid playlist or song ID");
         }
@@ -82,7 +81,7 @@ public class PlaylistManager {
     /**
      * Removes a song from a playlist
      */
-    public void removeSongFromPlaylist(int playlistId, int songId) throws SQLException {
+    public void removeSongFromPlaylist(int playlistId, int songId) throws Exception {
         if (playlistId <= 0 || songId <= 0) {
             throw new IllegalArgumentException("Invalid playlist or song ID");
         }
@@ -92,14 +91,14 @@ public class PlaylistManager {
     /**
      * Moves a song up in the playlist
      */
-    public void moveSongUp(int playlistId, int songId) throws SQLException {
+    public void moveSongUp(int playlistId, int songId) throws Exception {
         playlistDAO.moveSongUp(playlistId, songId);
     }
 
     /**
      * Moves a song down in the playlist
      */
-    public void moveSongDown(int playlistId, int songId) throws SQLException {
+    public void moveSongDown(int playlistId, int songId) throws Exception {
         playlistDAO.moveSongDown(playlistId, songId);
     }
 }
