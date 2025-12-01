@@ -11,7 +11,7 @@ import java.io.IOException;
 public class YouTubePlayer {
 
     /**
-     * Opens the YouTube audio player in a new window
+     * Opens the YouTube audio player in a new window ;)
      */
     public void open() {
         try {
