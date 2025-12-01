@@ -536,7 +536,7 @@ public class MyTunesViewController implements Initializable {
     @FXML
     private void btnYoutube(ActionEvent actionEvent) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MyTunesMain.class.getResource("views/YouTubePlayer.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(MyTunesMain.class.getResource("views/YouTubePlayerView.fxml"));
 
 
             Stage stage = new Stage();
