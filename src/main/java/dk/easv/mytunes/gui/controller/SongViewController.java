@@ -8,8 +8,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -111,12 +115,46 @@ public class SongViewController implements Initializable {
                 String relativePath = getRelativePath(selectedFile);
                 txtFilePath.setText(relativePath);
 
-                // Auto-fill duration if empty
-                if (txtDuration.getText().trim().isEmpty()) {
-                    txtDuration.setText("180"); // 3 minutes default
-                }
+                extractAudioDuration(selectedFile);
+
             } else {
                 showError("Selected file must be in the 'data' folder!\nPlease copy your music files to: " + dataDirectory.getAbsolutePath());
+            }
+        }
+    }
+
+    private void extractAudioDuration(File audioFile){
+        MediaPlayer tempPlayer = null;
+        try {
+            Media media = new Media(audioFile.toURI().toString());
+            tempPlayer = new MediaPlayer(media);
+
+            final MediaPlayer player = tempPlayer;
+            player.setOnReady(() -> {
+                try {
+
+                Duration duration = player.getMedia().getDuration();
+                int durationInSeconds = (int) duration.toSeconds();
+                txtDuration.setText(String.valueOf(durationInSeconds));
+            } catch (Exception e) {
+            showError("Failed to extract audio duration: " + e.getMessage());
+
+            if (txtDuration.getText().trim().isEmpty()) {
+                txtDuration.setText("180"); // Default to 3 minutes
+            }
+        }finally {
+            player.dispose();
+                }
+            });
+
+        } catch (Exception e) {
+            showError("Failed to create media player for duration extraction" + e.getMessage());
+
+            if (txtDuration.getText().trim().isEmpty()) {
+                txtDuration.setText("180"); // 3 minutes default
+            }
+            if (tempPlayer != null) {
+                tempPlayer.dispose();
             }
         }
     }
