@@ -3,7 +3,7 @@ package dk.easv.mytunes.gui.controller;
 import dk.easv.mytunes.MyTunesMain;
 import dk.easv.mytunes.be.Playlist;
 import dk.easv.mytunes.be.Song;
-import dk.easv.mytunes.gui.MusicPlayer;
+import dk.easv.mytunes.gui.util.MusicPlayer;
 import dk.easv.mytunes.gui.model.PlaylistModel;
 import dk.easv.mytunes.gui.model.SongModel;
 //Java imports
