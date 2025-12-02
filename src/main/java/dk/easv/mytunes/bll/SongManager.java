@@ -30,18 +30,8 @@ public class SongManager {
      */
     public Song createSong(String title, String artist, String category, int duration, String filePath) throws Exception {
         // Validation
-        if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be empty");
-        }
-        if (artist == null || artist.trim().isEmpty()) {
-            throw new IllegalArgumentException("Artist cannot be empty");
-        }
-        if (filePath == null || filePath.trim().isEmpty()) {
-            throw new IllegalArgumentException("File path cannot be empty");
-        }
-        if (duration <= 0) {
-            throw new IllegalArgumentException("Duration must be positive");
-        }
+        validateSongInput(title, artist, filePath, duration);
+
 
         // Check if file exists
         File file = new File(filePath);
@@ -78,14 +68,11 @@ public class SongManager {
         if (song.getId() <= 0) {
             throw new IllegalArgumentException("Invalid song ID");
         }
-
+        if (song == null) {
+            throw new IllegalArgumentException("Song cannot be null");
+        }
         // Validation
-        if (song.getTitle() == null || song.getTitle().trim().isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be empty");
-        }
-        if (song.getArtist() == null || song.getArtist().trim().isEmpty()) {
-            throw new IllegalArgumentException("Artist cannot be empty");
-        }
+        validateSongInput(song.getTitle(), song.getArtist(), song.getFilePath(), song.getDuration());
 
         // Validate file path is in data folder
         File file = new File(song.getFilePath());
@@ -152,6 +139,20 @@ public class SongManager {
             return filePath.startsWith(dataPath);
         } catch (IOException e) {
             return false;
+        }
+    }
+    private void validateSongInput(String title, String artist, String filePath, int duration) {
+        if (title == null || title.trim().isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be empty");
+        }
+        if (artist == null || artist.trim().isEmpty()) {
+            throw new IllegalArgumentException("Artist cannot be empty");
+        }
+        if (filePath == null || filePath.trim().isEmpty()) {
+            throw new IllegalArgumentException("File path cannot be empty");
+        }
+        if (duration <= 0) {
+            throw new IllegalArgumentException("Duration must be positive");
         }
     }
 
