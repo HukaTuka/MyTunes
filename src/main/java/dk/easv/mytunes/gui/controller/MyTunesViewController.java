@@ -53,6 +53,8 @@ public class MyTunesViewController implements Initializable {
     @FXML private Label lblCurrentTime;
     @FXML private Label lblTotalTime;
     @FXML private Button btnPlayPause;
+    @FXML private Label lblPlaylistInfo;
+
     // Models
     private SongModel songModel;
     private PlaylistModel playlistModel;
@@ -117,6 +119,9 @@ public class MyTunesViewController implements Initializable {
         lstPl.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 loadPlaylistSongs(newVal);
+            } else {
+                // No playlist selected - clear info
+                updatePlaylistInfo(null);
             }
         });
 
@@ -138,6 +143,23 @@ public class MyTunesViewController implements Initializable {
         sldVolume.valueProperty().addListener((obs, oldVal, newVal) -> {
             musicPlayer.setVolume(newVal.doubleValue() / 100.0);
         });
+    }
+
+    private void updatePlaylistInfo(Playlist playlist) {
+        if (playlist == null || currentPlaylistSongs == null || currentPlaylistSongs.isEmpty()) {
+            lblPlaylistInfo.setText("0 songs - 0:00");
+        } else {
+            int songCount = currentPlaylistSongs.size();
+            int totalSeconds = currentPlaylistSongs.stream()
+                    .mapToInt(Song::getDuration)
+                    .sum();
+
+            int minutes = totalSeconds / 60;
+            int seconds = totalSeconds % 60;
+
+            String songText = songCount == 1 ? "song" : "songs";
+            lblPlaylistInfo.setText(String.format("%d %s - %d:%02d", songCount, songText, minutes, seconds));
+        }
     }
 
     private void setupProgressTimeline() {
@@ -209,11 +231,11 @@ public class MyTunesViewController implements Initializable {
         }
 
         try {
-            currentPlaylistSongs.setAll(
-                    playlistModel.getSongsInPlaylist(playlist)
-            );
+            currentPlaylistSongs.setAll(playlistModel.getSongsInPlaylist(playlist));
+            updatePlaylistInfo(playlist);
         } catch (Exception e) {
             showError("Error", "Failed to load playlist songs: " + e.getMessage());
+            updatePlaylistInfo(null);
         }
     }
 
@@ -303,6 +325,7 @@ public class MyTunesViewController implements Initializable {
             try {
                 playlistModel.deletePlaylist(selected);
                 tblSongsOnPl.getItems().clear();
+                updatePlaylistInfo(null);
             } catch (Exception ex) {
                 showError("Error", "Failed to delete playlist: " + ex.getMessage());
             }

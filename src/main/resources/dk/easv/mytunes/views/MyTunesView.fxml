@@ -28,9 +28,9 @@
             <!-- Left Section - Playlists -->
             <VBox prefWidth="200" spacing="5" HBox.hgrow="NEVER">
                 <Label text="Playlists">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font></Label>
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font></Label>
 
                 <ListView fx:id="lstPl" VBox.vgrow="ALWAYS" />
 
@@ -44,9 +44,18 @@
             <!-- Middle Section - Songs in Playlist -->
             <VBox prefWidth="350" spacing="5" HBox.hgrow="ALWAYS">
                 <Label text="Songs in Playlist">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font></Label>
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font></Label>
+
+                <!-- NEW: Playlist Info Display -->
+                <HBox spacing="10" style="-fx-background-color: #f0f0f0; -fx-padding: 5;">
+                    <Label fx:id="lblPlaylistInfo" text="0 songs - 0:00" style="-fx-text-fill: #555555;">
+                        <font>
+                            <Font name="System Italic" size="11.0" />
+                        </font>
+                    </Label>
+                </HBox>
 
                 <TableView fx:id="tblSongsOnPl" VBox.vgrow="ALWAYS">
                     <columns>
@@ -66,9 +75,9 @@
             <!-- Right Section - All Songs -->
             <VBox spacing="5" HBox.hgrow="ALWAYS">
                 <Label text="Songs">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font></Label>
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font></Label>
 
                 <!-- Filter Section -->
                 <HBox spacing="5">
@@ -90,7 +99,7 @@
                     <Button onAction="#btnEditSong" prefWidth="65" text="Edit..." />
                     <Button onAction="#btnDeleteSong" prefWidth="65" text="Delete" />
                     <Button onAction="#btnAddToPL" prefWidth="65" text="← Add" />
-               <Button mnemonicParsing="false" onAction="#btnYoutube" text="Youtube" />
+                    <Button mnemonicParsing="false" onAction="#btnYoutube" text="Youtube" />
                 </HBox>
             </VBox>
         </HBox>
@@ -100,9 +109,9 @@
     <bottom>
         <VBox spacing="5" style="-fx-background-color: #f0f0f0; -fx-padding: 10;">
             <Label fx:id="lblPlaying" text="No song playing">
-            <font>
-               <Font name="System Bold" size="13.0" />
-            </font></Label>
+                <font>
+                    <Font name="System Bold" size="13.0" />
+                </font></Label>
 
             <HBox alignment="CENTER_LEFT" spacing="10">
                 <Button onAction="#btnPrevious" prefWidth="40" text="⏮" />
