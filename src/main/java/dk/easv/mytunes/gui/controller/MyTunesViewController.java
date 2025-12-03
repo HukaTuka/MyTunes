@@ -88,6 +88,11 @@ public class MyTunesViewController implements Initializable {
             setupProgressTimeline();
             setupSeekFunctionality();
 
+            // Updates now playing when song changes
+            musicPlayer.setOnSongChanged(() -> {
+                updateNowPlaying();
+            });
+
         } catch (Exception e) {
             showError("Initialization Error", "Failed to initialize application: " + e.getMessage());
             e.printStackTrace();
