@@ -104,20 +104,4 @@ public class PlaylistModel {
         playlistManager.moveSongDown(playlist.getId(), song.getId());
     }
 
-    /**
-     * Gets total number of songs in a playlist
-     */
-    public int getSongCount(Playlist playlist) throws Exception {
-        return playlistManager.getSongsInPlaylist(playlist.getId()).size();
-    }
-
-    /**
-     * Gets formatted total duration of playlist
-     */
-    public String getTotalDuration(Playlist playlist) {
-        int totalSeconds = playlist.getTotalDuration();
-        int minutes = totalSeconds / 60;
-        int seconds = totalSeconds % 60;
-        return String.format("%d:%02d", minutes, seconds);
-    }
 }
