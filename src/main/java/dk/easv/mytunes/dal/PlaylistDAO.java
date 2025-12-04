@@ -13,11 +13,9 @@ import java.util.List;
  */
 public class PlaylistDAO implements IPlaylistDataAccess {
     private DBConnector dbConnector;
-    private SongDAO songDAO;
 
     public PlaylistDAO() throws IOException {
         this.dbConnector = DBConnector.getInstance();
-        this.songDAO = new SongDAO();
     }
 
     /**
